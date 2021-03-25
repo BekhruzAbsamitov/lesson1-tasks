@@ -71,7 +71,7 @@ public class CompanyService {
         company.setAddress(address);
         companyRepository.save(company);
 
-        return new Response("Added!", true);
+        return new Response("Added successfully!", true);
     }
 
     public List<Company> get() {
@@ -87,64 +87,3 @@ public class CompanyService {
         return optionalCompany.get();
     }
 }
-/**
- * public class CompanyServiceImpl implements CompanyService {
- * <p>
- * final CompanyRepository companyRepository;
- * final AddressRepository addressRepository;
- * <p>
- * public CompanyServiceImpl(CompanyRepository companyRepository,
- * AddressRepository addressRepository) {
- * this.companyRepository = companyRepository;
- * this.addressRepository = addressRepository;
- * }
- *
- * @Override public ApiResponse save(CompanyDTO companyDTO) {
- * if(companyRepository.existsByCorpName(companyDTO.getCorpName()))
- * return new ApiResponse("This company name is already exists!", false);
- * <p>
- * Company company = new Company();
- * company.setCorpName(companyDTO.getCorpName());
- * company.setDirectorName(companyDTO.getDirectorName());
- * <p>
- * Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
- * if(!optionalAddress.isPresent())
- * return new ApiResponse("This address id is not found!", false);
- * company.setAddress(optionalAddress.get());
- * <p>
- * companyRepository.save(company);
- * return new ApiResponse("Address saved!", true);
- * }
- * @Override public List<Company> findAll() {
- * return companyRepository.findAll();
- * }
- * @Override public Company finOneById(Integer companyId) {
- * Optional<Company> optionalCompany = companyRepository.findById(companyId);
- * return optionalCompany.orElse(new Company());
- * }
- * @Override public ApiResponse edit(CompanyDTO companyDTO, Integer companyId) {
- * Optional<Company> optionalCompany = companyRepository.findById(companyId);
- * if(optionalCompany.isPresent()){
- * optionalCompany.get().setCorpName(companyDTO.getCorpName());
- * optionalCompany.get().setDirectorName(companyDTO.getDirectorName());
- * Optional<Address> optionalAddress = addressRepository.findById(companyDTO.getAddressId());
- * if(!optionalAddress.isPresent())
- * return new ApiResponse("This address id is not found!", false);
- * <p>
- * companyRepository.save(optionalCompany.get());
- * return new ApiResponse("Company updated!", true);
- * <p>
- * }
- * return new ApiResponse("Company not found!", false);
- * }
- * @Override public ApiResponse delete(Integer companyId) {
- * Optional<Company> optionalCompany = companyRepository.findById(companyId);
- * if(optionalCompany.isPresent()){
- * companyRepository.deleteById(companyId);
- * <p>
- * return new ApiResponse("Company deleted!", true);
- * }
- * return new ApiResponse("Company not found!", false);
- * }
- * }
- */
