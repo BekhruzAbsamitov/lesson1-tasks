@@ -24,21 +24,26 @@ public class CompanyService {
 
     public Response delete(Integer id) {
         final Optional<Company> optionalCompany = companyRepository.findById(id);
+
         if (optionalCompany.isEmpty()) {
             return new Response("Company not found", false);
         }
+
         companyRepository.deleteById(id);
         return new Response("Deleted!", true);
     }
 
     public Response edit(Integer id, CompanyDto companyDto) {
         final Optional<Company> optionalCompany = companyRepository.findById(id);
+
         if (optionalCompany.isEmpty()) {
             return new Response("Not found", false);
         }
+
         Address address = new Address();
         address.setStreet(companyDto.getStreet());
         address.setHomeNumber(companyDto.getHomeNumber());
+        addressRepository.save(address);
 
         final boolean exists = companyRepository.existsByNameAndIdNot(companyDto.getName(), id);
         if (exists) {
@@ -55,10 +60,12 @@ public class CompanyService {
     }
 
     public Response add(CompanyDto companyDto) {
+
         final boolean exists = companyRepository.existsByName(companyDto.getName());
         if (exists) {
             return new Response("Company already exists", false);
         }
+
         Company company = new Company();
 
         company.setDirectorName(companyDto.getDirectorName());
@@ -67,10 +74,10 @@ public class CompanyService {
         Address address = new Address();
         address.setStreet(companyDto.getStreet());
         address.setHomeNumber(companyDto.getHomeNumber());
-
+        addressRepository.save(address);
         company.setAddress(address);
-        companyRepository.save(company);
 
+        companyRepository.save(company);
         return new Response("Added successfully!", true);
     }
 

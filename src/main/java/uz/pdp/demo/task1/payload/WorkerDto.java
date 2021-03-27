@@ -8,5 +8,6 @@ public class WorkerDto {
     private String name;
     private String phoneNumber;
     private Integer departmentId;
-    private Integer addressId;
+    private String street;
+    private Integer homeNumber;
 }

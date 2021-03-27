@@ -25,61 +25,57 @@ public class WorkerService {
     }
 
     public Response delete(Integer id) {
-        final Optional<Worker> optionalCompany = workerRepository.findById(id);
-        if (optionalCompany.isEmpty()) {
+        final Optional<Worker> optionalWorker = workerRepository.findById(id);
+        if (optionalWorker.isEmpty()) {
             return new Response("Company not found", false);
         }
         workerRepository.deleteById(id);
         return new Response("Deleted!", true);
     }
 
-    public Response edit(Integer id, WorkerDto companyDto) {
+    public Response edit(Integer id, WorkerDto workerDto) {
         final Optional<Worker> optionalCompany = workerRepository.findById(id);
         if (optionalCompany.isEmpty()) {
             return new Response("Not found", false);
         }
-        final Optional<Department> optionalAddress = departmentRepository.findById(companyDto.getDepartmentId());
+        final Optional<Department> optionalAddress = departmentRepository.findById(workerDto.getDepartmentId());
         if (optionalAddress.isEmpty()) {
             return new Response("Department not found", false);
         }
 
         final Worker worker = optionalCompany.get();
-        final Optional<Address> address = addressRepository.findById(companyDto.getAddressId());
-        if (address.isEmpty()) {
-            return new Response("Address not found", false);
-        }
 
+        Address address = new Address();
+        address.setStreet(workerDto.getStreet());
+        address.setHomeNumber(workerDto.getHomeNumber());
+        addressRepository.save(address);
 
         final Department department = optionalAddress.get();
-        final Address address1 = address.get();
         worker.setDepartment(department);
-        worker.setAddress(address1);
-
+        worker.setAddress(address);
         workerRepository.save(worker);
         return new Response("Edited!", true);
 
     }
 
-    public Response add(WorkerDto companyDto) {
+    public Response add(WorkerDto workerDto) {
         Worker worker = new Worker();
-        worker.setName(companyDto.getName());
+        worker.setName(workerDto.getName());
 
-        final Optional<Address> address = addressRepository.findById(companyDto.getAddressId());
-        if (address.isEmpty()) {
-            return new Response("Address not found", false);
-        }
-
-
-        final Optional<Department> optionalAddress = departmentRepository.findById(companyDto.getDepartmentId());
-        if (optionalAddress.isEmpty()) {
+        final Optional<Department> optionalDepartment = departmentRepository.findById(workerDto.getDepartmentId());
+        if (optionalDepartment.isEmpty()) {
             return new Response("Department not found", false);
         }
 
+        final Department department = optionalDepartment.get();
+        final Address a = new Address();
 
-        final Department department = optionalAddress.get();
-        final Address address1 = address.get();
+        a.setHomeNumber(workerDto.getHomeNumber());
+        a.setStreet(workerDto.getStreet());
+        addressRepository.save(a);
+
         worker.setDepartment(department);
-        worker.setAddress(address1);
+        worker.setAddress(a);
 
         workerRepository.save(worker);
         return new Response("Edited!", true);
@@ -90,11 +86,11 @@ public class WorkerService {
     }
 
     public Worker getById(Integer id) {
-        final Optional<Worker> optionalCompany =
+        final Optional<Worker> optionalWorker =
                 workerRepository.findById(id);
-        if (optionalCompany.isEmpty()) {
+        if (optionalWorker.isEmpty()) {
             return null;
         }
-        return optionalCompany.get();
+        return optionalWorker.get();
     }
 }
