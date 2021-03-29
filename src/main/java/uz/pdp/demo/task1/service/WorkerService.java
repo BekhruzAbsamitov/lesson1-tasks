@@ -34,8 +34,8 @@ public class WorkerService {
     }
 
     public Response edit(Integer id, WorkerDto workerDto) {
-        final Optional<Worker> optionalCompany = workerRepository.findById(id);
-        if (optionalCompany.isEmpty()) {
+        final Optional<Worker> optionalWorker = workerRepository.findById(id);
+        if (optionalWorker.isEmpty()) {
             return new Response("Not found", false);
         }
         final Optional<Department> optionalAddress = departmentRepository.findById(workerDto.getDepartmentId());
@@ -43,7 +43,7 @@ public class WorkerService {
             return new Response("Department not found", false);
         }
 
-        final Worker worker = optionalCompany.get();
+        final Worker worker = optionalWorker.get();
 
         Address address = new Address();
         address.setStreet(workerDto.getStreet());

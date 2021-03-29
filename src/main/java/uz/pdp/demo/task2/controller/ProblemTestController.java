@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.demo.task2.entiry.ProblemTest;
 import uz.pdp.demo.task2.entiry.Response;
 import uz.pdp.demo.task2.payload.ProblemTestDto;
-import uz.pdp.demo.task2.repository.ProblemTestRepository;
 import uz.pdp.demo.task2.service.ProblemTestService;
 
 import java.util.List;
